@@ -208,6 +208,15 @@
     font-family: var(--font-family-heading);
   }
 
+  .animate-hero-logo {
+    animation: heroLogo 1.2s ease-out forwards;
+  }
+
+  .animate-hero-fade {
+    opacity: 0;
+    animation: heroFade 0.8s ease-out forwards;
+  }
+
   .font-mono {
     font-family: var(--font-family-mono);
   }
