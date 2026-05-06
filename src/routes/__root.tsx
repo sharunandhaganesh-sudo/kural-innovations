@@ -33,10 +33,14 @@ export const Route = createRootRoute({
       { name: "description", content: "Technology innovation studio building real-world solutions across Web, IoT, Embedded Systems & AI/ML. Based in Tamil Nadu, India." },
       { name: "author", content: "Kural Innovations" },
       { property: "og:title", content: "Kural Innovations — Small Ideas. Powerful Solutions." },
-      { property: "og:description", content: "Technology innovation studio building real-world solutions across Web, IoT, Embedded Systems & AI/ML." },
+      { property: "og:description", content: "Technology innovation studio building real-world solutions across Web, IoT, Embedded Systems & AI/ML. Based in Tamil Nadu, India." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Kural Innovations — Small Ideas. Powerful Solutions." },
+      { name: "twitter:description", content: "Technology innovation studio building real-world solutions across Web, IoT, Embedded Systems & AI/ML. Based in Tamil Nadu, India." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/X6G9ceCjGGa8m4DvPkg0dLsn09t1/social-images/social-1778065509405-1st_post.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/X6G9ceCjGGa8m4DvPkg0dLsn09t1/social-images/social-1778065509405-1st_post.webp" },
     ],
     links: [
       {
