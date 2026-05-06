@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logo.png";
 
 const navItems = [
@@ -27,11 +26,8 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 animate-hero-fade ${
         scrolled ? "glass" : "bg-transparent"
       }`}
     >
@@ -72,28 +68,21 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-border"
-          >
-            <div className="px-6 py-4 space-y-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => scrollTo(item.href)}
-                  className="block w-full text-left font-heading text-base text-muted-foreground hover:text-primary transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+      {mobileOpen && (
+        <div className="md:hidden glass border-t border-border">
+          <div className="px-6 py-4 space-y-4">
+            {navItems.map((item) => (
+              <button
+                key={item.href}
+                onClick={() => scrollTo(item.href)}
+                className="block w-full text-left font-heading text-base text-muted-foreground hover:text-primary transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
   );
 }
