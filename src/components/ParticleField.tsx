@@ -20,9 +20,9 @@ export default function ParticleField() {
     if (!ctx) return;
 
     let animationId: number;
-    const colors = ["#00f5ff", "#7c00ff", "#00ff88", "#ff6b00"];
+    const colors = ["#6366f1", "#8b5cf6", "#06b6d4", "#10b981"];
     const particles: Particle[] = [];
-    const count = 80;
+    const count = 60;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -35,10 +35,10 @@ export default function ParticleField() {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
+        opacity: Math.random() * 0.2 + 0.05,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
@@ -61,7 +61,6 @@ export default function ParticleField() {
         ctx.globalAlpha = p.opacity;
         ctx.fill();
 
-        // Draw connections
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
@@ -72,7 +71,7 @@ export default function ParticleField() {
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = p.color;
-            ctx.globalAlpha = (1 - dist / 150) * 0.15;
+            ctx.globalAlpha = (1 - dist / 150) * 0.06;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
