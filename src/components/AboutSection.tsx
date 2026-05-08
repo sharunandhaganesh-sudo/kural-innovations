@@ -48,7 +48,7 @@ export default function AboutSection() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 group"
+                className="p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 group card-elevated"
                 style={{ background: "var(--gradient-card)" }}
               >
                 <div className="flex items-start gap-3">

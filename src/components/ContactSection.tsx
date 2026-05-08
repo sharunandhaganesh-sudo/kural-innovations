@@ -129,7 +129,7 @@ export default function ContactSection() {
           <div className="md:col-span-2 space-y-6">
             <a
               href="mailto:kuralinnovation@gmail.com"
-              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/40 transition-all duration-300"
+              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 card-elevated"
               style={{ background: "var(--gradient-card)" }}
             >
               <span className="text-2xl">📧</span>
@@ -145,7 +145,7 @@ export default function ContactSection() {
 
             <a
               href="tel:+919345852826"
-              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/40 transition-all duration-300"
+              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 card-elevated"
               style={{ background: "var(--gradient-card)" }}
             >
               <span className="text-2xl">📞</span>
@@ -163,7 +163,7 @@ export default function ContactSection() {
               href="https://instagram.com/kural_innovations"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/40 transition-all duration-300"
+              className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 card-elevated"
               style={{ background: "var(--gradient-card)" }}
             >
               <span className="text-2xl">📸</span>
@@ -187,7 +187,7 @@ export default function ContactSection() {
           <div className="md:col-span-3">
             {status === "success" ? (
               <div
-                className="p-8 rounded-2xl border border-primary/30 text-center"
+                className="p-8 rounded-2xl border border-primary/20 text-center card-elevated"
                 style={{ background: "var(--gradient-card)" }}
               >
                 <div className="text-5xl mb-4">✅</div>
@@ -207,10 +207,10 @@ export default function ContactSection() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="p-6 md:p-8 rounded-2xl border border-border space-y-5"
+                className="p-6 md:p-8 rounded-2xl border border-border space-y-5 card-elevated"
                 style={{ background: "var(--gradient-card)" }}
               >
-                {/* Honeypot - hidden from users */}
+                {/* Honeypot */}
                 <input
                   type="text"
                   id="hp-field"
@@ -230,7 +230,7 @@ export default function ContactSection() {
                     value={form.name}
                     onChange={(e) => updateField("name", e.target.value)}
                     placeholder="Your name"
-                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
+                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all ${
                       errors.name ? "border-destructive" : "border-border"
                     }`}
                   />
@@ -250,7 +250,7 @@ export default function ContactSection() {
                     value={form.email}
                     onChange={(e) => updateField("email", e.target.value)}
                     placeholder="your@email.com"
-                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
+                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all ${
                       errors.email ? "border-destructive" : "border-border"
                     }`}
                   />
@@ -270,7 +270,7 @@ export default function ContactSection() {
                     onChange={(e) => updateField("message", e.target.value)}
                     placeholder="Tell us about your idea or project..."
                     rows={5}
-                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none ${
+                    className={`w-full px-4 py-3 rounded-lg bg-input border text-foreground font-body text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none ${
                       errors.message ? "border-destructive" : "border-border"
                     }`}
                   />
@@ -282,7 +282,7 @@ export default function ContactSection() {
                 </div>
 
                 {status === "error" && (
-                  <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/30">
+                  <div className="p-3 rounded-lg bg-destructive/5 border border-destructive/20">
                     <p className="text-destructive text-sm font-mono">
                       {errorMsg}
                     </p>
