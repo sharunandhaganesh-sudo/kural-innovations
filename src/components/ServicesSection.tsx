@@ -26,8 +26,8 @@ export default function ServicesSection() {
   const { ref, visible } = useIntersection();
 
   return (
-    <section id="services" className="relative py-32 px-6" ref={ref}>
-      <div className="absolute inset-0 circuit-grid opacity-10" />
+    <section id="services" className="relative py-32 px-6 bg-secondary/30" ref={ref}>
+      <div className="absolute inset-0 circuit-grid opacity-[0.06]" />
       <div className="max-w-6xl mx-auto relative z-10">
         <div className={`text-center mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
           <p className="font-mono text-sm text-primary tracking-widest mb-3">{"// SERVICES"}</p>
@@ -40,7 +40,7 @@ export default function ServicesSection() {
           {services.map((service, i) => (
             <div
               key={service.title}
-              className={`group relative p-6 rounded-2xl border border-border hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`group relative p-6 rounded-2xl border border-border hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 card-elevated ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ background: "var(--gradient-card)", transitionDelay: `${150 * i}ms` }}
             >
               <div className="relative z-10">
