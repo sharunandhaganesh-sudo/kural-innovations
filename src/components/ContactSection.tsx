@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { z } from "zod";
+import SectionLabel from "./SectionLabel";
 
 function useIntersection(margin = "-100px") {
   const ref = useRef<HTMLDivElement>(null);

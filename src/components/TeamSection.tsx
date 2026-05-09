@@ -1,4 +1,6 @@
 import { useRef, useEffect, useState } from "react";
+import SectionLabel from "./SectionLabel";
+import { useTilt } from "@/hooks/useTilt";
 
 function useIntersection(margin = "-100px") {
   const ref = useRef<HTMLDivElement>(null);
