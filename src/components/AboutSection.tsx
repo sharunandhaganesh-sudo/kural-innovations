@@ -56,3 +56,24 @@ export default function AboutSection() {
     </section>
   );
 }
+
+function AboutCard({ item }: { item: { icon: string; title: string; desc: string } }) {
+  const tilt = useTilt(5);
+  return (
+    <div
+      ref={tilt.ref}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      className="tilt-card p-4 rounded-xl border border-border group card-elevated"
+      style={{ background: "var(--gradient-card)" }}
+    >
+      <div className="relative z-10 flex items-start gap-3">
+        <span className="text-2xl">{item.icon}</span>
+        <div>
+          <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors">{item.title}</h3>
+          <p className="text-sm text-muted-foreground mt-1">{item.desc}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
