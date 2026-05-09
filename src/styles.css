@@ -242,3 +242,138 @@
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
 }
+
+/* ============ Animated section label ============ */
+@keyframes shimmerSlide {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes labelLineGrow {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+@keyframes labelDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.6; }
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.section-label .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  animation: labelDot 2s ease-in-out infinite;
+}
+.section-label .line {
+  width: 32px; height: 1px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  transform-origin: left;
+  animation: labelLineGrow 1s ease-out forwards;
+}
+.section-label .label-text {
+  background: linear-gradient(
+    90deg,
+    oklch(0.55 0.22 255) 0%,
+    oklch(0.55 0.20 300) 25%,
+    oklch(0.65 0.20 200) 50%,
+    oklch(0.55 0.20 300) 75%,
+    oklch(0.55 0.22 255) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSlide 4s linear infinite;
+  font-weight: 600;
+}
+
+/* ============ Award-winning hover styles ============ */
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+}
+.tilt-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    oklch(0.55 0.22 255 / 0.18),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--ang, 0deg), transparent, var(--primary), transparent 30%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .tilt-card:hover {
+    transform: perspective(1000px) rotateX(calc(var(--ry, 0) * 1deg)) rotateY(calc(var(--rx, 0) * 1deg)) translateZ(20px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .tilt-card:hover::before { opacity: 1; }
+  .tilt-card:hover::after { opacity: 1; animation: angSpin 4s linear infinite; }
+}
+@keyframes angSpin {
+  to { --ang: 360deg; }
+}
+@property --ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Project reveal stagger */
+@keyframes projectIn {
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.project-card {
+  opacity: 0;
+  animation: projectIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Magnetic underline for nav-style */
+.nav-link-magnet {
+  position: relative;
+  overflow: hidden;
+}
+.nav-link-magnet::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.nav-link-magnet:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
