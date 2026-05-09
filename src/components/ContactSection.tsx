@@ -110,10 +110,8 @@ export default function ContactSection() {
         <div
           className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
         >
-          <p className="font-mono text-sm text-primary tracking-widest mb-3">
-            {"// CONTACT"}
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+          <SectionLabel align="center">Contact</SectionLabel>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Let's Build <span className="text-gradient">Together</span>
           </h2>
           <p className="font-heading text-lg text-muted-foreground max-w-xl mx-auto">
