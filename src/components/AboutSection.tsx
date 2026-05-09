@@ -1,4 +1,6 @@
 import { useRef, useEffect, useState } from "react";
+import SectionLabel from "./SectionLabel";
+import { useTilt } from "@/hooks/useTilt";
 
 function useIntersection(margin = "-100px") {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,8 +22,8 @@ export default function AboutSection() {
     <section id="about" className="relative py-32 px-6" ref={ref}>
       <div className="max-w-6xl mx-auto">
         <div className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
-          <p className="font-mono text-sm text-primary tracking-widest mb-3">{"// ABOUT US"}</p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-8">
+          <SectionLabel>About Us</SectionLabel>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-8">
             Where Ideas Meet <span className="text-gradient">Implementation</span>
           </h2>
         </div>
@@ -46,19 +48,7 @@ export default function AboutSection() {
               { icon: "🎯", title: "Problem-first approach", desc: 'Every project begins with: "What real problem are we solving?"' },
               { icon: "💡", title: "Innovation-first mindset", desc: "Every solution is custom-engineered from scratch." },
             ].map((item) => (
-              <div
-                key={item.title}
-                className="p-4 rounded-xl border border-border hover:border-primary/30 transition-all duration-300 group card-elevated"
-                style={{ background: "var(--gradient-card)" }}
-              >
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">{item.icon}</span>
-                  <div>
-                    <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{item.desc}</p>
-                  </div>
-                </div>
-              </div>
+              <AboutCard key={item.title} item={item} />
             ))}
           </div>
         </div>
