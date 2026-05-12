@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import SectionLabel from "./SectionLabel";
 import { useTilt } from "@/hooks/useTilt";
 
@@ -15,21 +15,7 @@ import bridalEcommerceImg from "@/assets/bridal-ecommerce.png";
 import fitnessImg from "@/assets/fitness-studio.jpg";
 import clinicImg from "@/assets/clinic.jpg";
 
-function useIntersection(margin = "-80px") {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { rootMargin: margin });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [margin]);
-  return { ref, visible };
-}
-
 const projects = [
-  // AtmoSense and Sewage Gas images swapped per request
   { title: "IS-TEWS", subtitle: "India-Specific Tsunami Early Warning System", type: "Research · AI/ML · IoT", desc: "ML system trained on 17,038 real USGS earthquake events to predict tsunami risk with AUC 0.9957.", tech: ["LightGBM", "Python", "Flask", "ESP8266"], status: "Active — Research", image: isTewsImg },
   { title: "AtmoSense", subtitle: "PM2.5 Estimation & AQI Visualisation", type: "AI/ML · Web · Deployed", desc: "Offline air quality estimation from satellite imagery with zero API dependencies.", tech: ["Python", "Flask", "OpenCV"], status: "Live — Deployed", link: "https://pm-25-prediction-and-analysis-project-production-a9d3.up.railway.app/", image: sewageGasImg },
   { title: "Sewage Gas Monitor", subtitle: "IoT-Based Gas Detection & Alert System", type: "IoT · Safety · Deployed", desc: "Safety-focused IoT system monitoring toxic gas in confined spaces with real-time alerts.", tech: ["IoT", "Embedded C", "Firebase"], status: "Live — Deployed", link: "https://sewage-gas.onrender.com", image: atmosenseImg },
@@ -46,20 +32,54 @@ const projects = [
 
 function ProjectCard({ p, index }: { p: typeof projects[0]; index: number }) {
   const tilt = useTilt(6);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  // attach both refs (tilt + reveal)
+  const setRefs = useCallback((node: HTMLDivElement | null) => {
+    cardRef.current = node;
+    (tilt.ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+  }, [tilt.ref]);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setRevealed(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // stagger by position within row of 3 (desktop) — wrap delay so it stays snappy
+  const delay = (index % 6) * 90;
+
   return (
-    <div
-      ref={tilt.ref}
+    <article
+      ref={setRefs}
       onMouseMove={tilt.onMouseMove}
       onMouseLeave={tilt.onMouseLeave}
-      className="project-card tilt-card group relative rounded-2xl border border-border overflow-hidden card-elevated"
-      style={{ background: "var(--gradient-card)", animationDelay: `${index * 80}ms` }}
+      data-revealed={revealed}
+      className="project-card tilt-card group relative rounded-2xl border border-border overflow-hidden card-elevated snap-start shrink-0 w-[88vw] sm:w-[60vw] md:w-auto md:shrink"
+      style={{
+        background: "var(--gradient-card)",
+        animationDelay: `${delay}ms`,
+      }}
     >
-      <div className="relative overflow-hidden aspect-[16/10]">
+      <div className="relative overflow-hidden aspect-[16/10] bg-muted">
         <img
           src={p.image}
           alt={p.title}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           loading="lazy"
+          decoding="async"
+          fetchPriority={index < 3 ? "high" : "low"}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
         <div className="absolute top-3 left-3">
@@ -96,17 +116,35 @@ function ProjectCard({ p, index }: { p: typeof projects[0]; index: number }) {
           </a>
         )}
       </div>
-    </div>
+    </article>
   );
 }
 
 export default function ProjectsSection() {
-  const { ref, visible } = useIntersection();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const railRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setHeaderVisible(true); obs.disconnect(); } }, { rootMargin: "-80px" });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const card = rail.querySelector<HTMLElement>("article");
+    const step = card ? card.offsetWidth + 24 : rail.clientWidth * 0.8;
+    rail.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
 
   return (
-    <section id="projects" className="relative py-24 sm:py-32 px-4 sm:px-6" ref={ref}>
-      <div className="max-w-7xl mx-auto">
-        <div className={`text-center mb-12 sm:mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+    <section id="projects" className="relative py-24 sm:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div ref={headerRef} className={`text-center mb-12 sm:mb-16 transition-all duration-700 ${headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
           <SectionLabel align="center">Portfolio</SectionLabel>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold">
             Featured <span className="text-gradient">Projects</span>
@@ -115,10 +153,32 @@ export default function ProjectsSection() {
             12 shipped builds spanning Web, IoT, Embedded, AI/ML, and Hardware.
           </p>
         </div>
+      </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {visible &&
-            projects.map((p, i) => <ProjectCard key={p.title} p={p} index={i} />)}
+      {/* Horizontal scroll-snap rail (mobile + tablet) */}
+      <div className="md:hidden relative">
+        <div
+          ref={railRef}
+          className="project-rail flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 sm:px-6 pb-6"
+          style={{ scrollPaddingInline: "1rem" }}
+        >
+          {projects.map((p, i) => (
+            <ProjectCard key={p.title} p={p} index={i} />
+          ))}
+          <div className="shrink-0 w-2" aria-hidden />
+        </div>
+        <div className="flex justify-center gap-3 mt-4">
+          <button onClick={() => scrollByCard(-1)} aria-label="Previous projects" className="h-10 w-10 rounded-full border border-border bg-card/80 backdrop-blur text-foreground hover:bg-primary hover:text-primary-foreground transition">←</button>
+          <button onClick={() => scrollByCard(1)} aria-label="Next projects" className="h-10 w-10 rounded-full border border-border bg-card/80 backdrop-blur text-foreground hover:bg-primary hover:text-primary-foreground transition">→</button>
+        </div>
+      </div>
+
+      {/* Desktop: vertical scroll-snap grid (auto-staggered reveal) */}
+      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 snap-y snap-mandatory">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.title} p={p} index={i} />
+          ))}
         </div>
       </div>
     </section>
