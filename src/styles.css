@@ -355,8 +355,20 @@
 }
 .project-card {
   opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  will-change: transform, opacity;
+}
+.project-card[data-revealed="true"] {
   animation: projectIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
+@media (prefers-reduced-motion: reduce) {
+  .project-card { opacity: 1; transform: none; animation: none; }
+}
+
+/* Hide horizontal scrollbar on rail for cleaner look */
+.project-rail { scrollbar-width: thin; }
+.project-rail::-webkit-scrollbar { height: 6px; }
+.project-rail::-webkit-scrollbar-thumb { background: color-mix(in oklab, var(--primary) 40%, transparent); border-radius: 999px; }
 
 /* Magnetic underline for nav-style */
 .nav-link-magnet {
