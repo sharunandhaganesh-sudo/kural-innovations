@@ -4,4 +4,4 @@ dist
 .wrangler
 .env
 .env.local
-supabase
+/supabase
